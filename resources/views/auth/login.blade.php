@@ -1,11 +1,11 @@
 @extends('layout.app')
 @section('content')
     <main class="login-form">
-        <div class="cotainer">
+        <div class="container mt-5">
             <div class="row justify-content-center">
-                <div class="col-md-4">
+                <h1 class="text-bold font-monospace text-uppercase text-center m-4">Student LogIn</h1>
+                <div class="col-md-8 col-lg-6">
                     <div class="card">
-                        <h3 class="card-header text-center">Login</h3>
                         <div class="card-body">
                             <form method="POST" action="{{ route('login.custom') }}">
                                 @csrf
@@ -32,7 +32,17 @@
                                     </div>
                                 </div>
                                 <div class="d-grid mx-auto">
-                                    <button type="submit" class="btn btn-dark btn-block">Signin</button>
+                                    <button type="submit" class="btn btn-primary btn-block mt-2">Sign In</button>
+                                </div>
+                                <div class="d-grid mx-auto">
+                                    <a href="{{ route('register.custom') }}"
+                                       class="btn btn-warning btn-block text-decoration-none mt-2">New
+                                        Admission?</a>
+                                </div>
+                                <div class="mt-3 text-center">
+                                    <a href="{{ route('password.request') }}" class="text-decoration-none">Have an
+                                        account | Forgot
+                                        Password?</a>
                                 </div>
                             </form>
                         </div>

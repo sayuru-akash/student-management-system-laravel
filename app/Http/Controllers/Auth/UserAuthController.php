@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 use Hash;
 use Session;
 use App\Models\User;
@@ -33,19 +35,25 @@ class UserAuthController extends Controller
 
     public function registration()
     {
-        return view('auth.registration');
+        return view('auth.register');
     }
 
     public function customRegistration(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'fname' => 'required',
+            'lname' => 'required',
+            'nic' => 'required|unique:users|min:10|max:12',
+            'birthday' => 'required|date',
+            'gender' => 'required',
+            'email' => 'required|email:rfc,dns|unique:users',
+            'phone' => 'required|digits:9|unique:users',
+            'password' => 'required|min:8|regex:/[a-zA-Z]/|regex:/[0-9]/|required_with:password_confirmation|same:password_confirmation',
         ]);
 
         $data = $request->all();
         $check = $this->create($data);
+        event(new Registered($check));
 
         return redirect("dashboard")->withSuccess('You have signed-in');
     }
@@ -53,8 +61,13 @@ class UserAuthController extends Controller
     public function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
+            'fname' => $data['fname'],
+            'lname' => $data['lname'],
+            'nic' => $data['nic'],
+            'birthday' => $data['birthday'],
+            'gender' => $data['gender'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
             'password' => Hash::make($data['password'])
         ]);
     }
