@@ -20,14 +20,16 @@ class UserFactory extends Factory
         return [
             'fname' => fake()->name(),
             'lname' => fake()->name(),
-            'nic' => fake()->unique()->creditCardNumber(),
+            'nic' => fake()->randomNumber(12)->unique()->toString(),
             'birthday' => fake()->date(),
-            'gender' => 'decline to answer',
+            'gender' => 'Decline to answer',
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->unique()->phoneNumber(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => '$2y$10$92IX', // password
             'student_id' => fake()->unique()->creditCardNumber(),
+            'address' => fake()->address(),
+            'role' => 'student',
             'remember_token' => Str::random(10),
         ];
     }

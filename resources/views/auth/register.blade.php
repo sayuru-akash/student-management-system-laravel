@@ -6,6 +6,18 @@
                 <h1 class="text-bold font-monospace text-uppercase text-center m-4">New Admission</h1>
                 <div class="col-md-10 col-lg-8">
                     <div class="card">
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                @foreach($errors->all() as $error)
+                                    <span>{{ $error }}</span></br>
+                                @endforeach
+                            </div>
+                        @endif
+                        @if(session()->has('message'))
+                            <div class="alert alert-success">
+                                {{ session()->get('message') }}
+                            </div>
+                        @endif
                         <div class="card-body">
                             <form action="{{ route('register.custom') }}" method="POST">
                                 @csrf
@@ -45,9 +57,9 @@
                                 <div class="form-group mb-3">
                                     <select class="form-control" id="gender" name="gender">
                                         <option selected disabled value="">Select Gender</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="decline to answer">Decline to answer</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Decline to answer">Decline to answer</option>
                                     </select>
                                     @if ($errors->has('gender'))
                                         <span class="text-danger">{{ $errors->first('gender') }}</span>
@@ -63,6 +75,7 @@
                                 <div class="form-group mb-3">
                                     <input type="text" placeholder="Mobile Number" id="phone" class="form-control"
                                            name="phone" required autofocus>
+                                    <small class="text-muted">Use the local format, e.g. 0771234567</small>
                                     @if ($errors->has('phone'))
                                         <span class="text-danger">{{ $errors->first('phone') }}</span>
                                     @endif
@@ -70,6 +83,8 @@
                                 <div class="form-group mb-3">
                                     <input type="password" placeholder="Password" id="password" class="form-control"
                                            name="password" required>
+                                    <small class="text-muted">Use at least 8 characters, including a number, a
+                                        capital letter and a simple letter</small>
                                     @if ($errors->has('password'))
                                         <span class="text-danger">{{ $errors->first('password') }}</span>
                                     @endif
@@ -84,7 +99,9 @@
                                 </div>
                                 <div class="form-group mb-3">
                                     <div class="checkbox">
-                                        <label><input type="checkbox" name="remember"> Remember Me</label>
+                                        <label><input type="checkbox" name="agree"> I agree to the <a
+                                                href="https://sitc.lk/terms-and-conditions">Terms and
+                                                Conditions</a></label>
                                     </div>
                                 </div>
                                 <div class="d-grid mx-auto">

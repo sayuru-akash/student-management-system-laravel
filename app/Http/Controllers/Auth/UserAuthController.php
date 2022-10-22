@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use Hash;
@@ -26,11 +27,16 @@ class UserAuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('dashboard')
-                ->withSuccess('Signed in');
+            if (Auth::user()->role == 'admin') {
+                return redirect()->intended('admin')
+                    ->with('Signed in');
+            } else {
+                return redirect()->intended('dashboard')
+                    ->with('Signed in');
+            }
         }
 
-        return redirect("login")->withSuccess('Login details are not valid');
+        return redirect("login")->withErrors('Login details are not valid');
     }
 
     public function registration()
@@ -47,18 +53,22 @@ class UserAuthController extends Controller
             'birthday' => 'required|date',
             'gender' => 'required',
             'email' => 'required|email:rfc,dns|unique:users',
-            'phone' => 'required|digits:9|unique:users',
+            'phone' => 'required|digits:10|unique:users',
             'password' => 'required|min:8|regex:/[a-zA-Z]/|regex:/[0-9]/|required_with:password_confirmation|same:password_confirmation',
+            'password_confirmation' => 'required',
+            'agree' => 'required',
         ]);
 
+
+        $student_id = IdGenerator::generate(['table' => 'users', 'field' => 'student_id', 'length' => 10, 'prefix' => 'ST-' . date('y'), 'reset_on_prefix_change' => true]);
         $data = $request->all();
-        $check = $this->create($data);
+        $check = $this->create($data, $student_id);
         event(new Registered($check));
 
-        return redirect("dashboard")->withSuccess('You have signed-in');
+        return redirect("dashboard")->with('You have signed-in');
     }
 
-    public function create(array $data)
+    public function create(array $data, string $student_id)
     {
         return User::create([
             'fname' => $data['fname'],
@@ -68,17 +78,19 @@ class UserAuthController extends Controller
             'gender' => $data['gender'],
             'email' => $data['email'],
             'phone' => $data['phone'],
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
+            'student_id' => $student_id,
         ]);
     }
 
     public function dashboard()
     {
         if (Auth::check()) {
+
             return view('dashboard');
         }
 
-        return redirect("login")->withSuccess('You are not allowed to access');
+        return redirect("login")->with('You are not allowed to access');
     }
 
     public function signOut()

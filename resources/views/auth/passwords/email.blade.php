@@ -8,6 +8,18 @@
                     <div class="card-header font-monospace text-uppercase">{{ __('Reset Password') }}</div>
 
                     <div class="card-body">
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                @foreach($errors->all() as $error)
+                                    <span>{{ $error }}</span></br>
+                                @endforeach
+                            </div>
+                        @endif
+                        @if(session()->has('message'))
+                            <div class="alert alert-success">
+                                {{ session()->get('message') }}
+                            </div>
+                        @endif
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
                                 {{ session('status') }}

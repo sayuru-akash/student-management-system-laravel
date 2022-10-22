@@ -6,6 +6,18 @@
                 <h1 class="text-bold font-monospace text-uppercase text-center m-4">Student LogIn</h1>
                 <div class="col-md-8 col-lg-6">
                     <div class="card">
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                @foreach($errors->all() as $error)
+                                    <span>{{ $error }}</span></br>
+                                @endforeach
+                            </div>
+                        @endif
+                        @if(session()->has('message'))
+                            <div class="alert alert-success">
+                                {{ session()->get('message') }}
+                            </div>
+                        @endif
                         <div class="card-body">
                             <form method="POST" action="{{ route('login.custom') }}">
                                 @csrf

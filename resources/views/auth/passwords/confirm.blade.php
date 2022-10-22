@@ -8,6 +8,18 @@
                     <div class="card-header text-uppercase font-monospace">{{ __('Confirm Password') }}</div>
 
                     <div class="card-body">
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                @foreach($errors->all() as $error)
+                                    <span>{{ $error }}</span></br>
+                                @endforeach
+                            </div>
+                        @endif
+                        @if(session()->has('message'))
+                            <div class="alert alert-success">
+                                {{ session()->get('message') }}
+                            </div>
+                        @endif
                         {{ __('Please confirm your password before continuing.') }}
 
                         <form method="POST" action="{{ route('password.confirm') }}">

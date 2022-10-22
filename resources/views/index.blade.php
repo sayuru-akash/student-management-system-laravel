@@ -39,12 +39,13 @@
                              data-aos-delay="200">
                             <div class="content">
                                 <h3>Who We Are</h3>
-                                <h2>Expedita voluptas omnis cupiditate totam eveniet nobis sint iste. Dolores est
-                                    repellat corrupti reprehenderit.</h2>
+                                <h2>Established in year 2005, SITC is among the leading tertiary education providers in
+                                    Sri Lanka with the largest number of students in the private sector higher education
+                                    industry.</h2>
                                 <p>
-                                    Quisquam vel ut sint cum eos hic dolores aperiam. Sed deserunt et. Inventore et et
-                                    dolor consequatur itaque ut voluptate sed et. Magnam nam ipsum tenetur suscipit
-                                    voluptatum nam et est corrupti.
+                                    Popularly known as SITC Campus, SITC offers Certificate level programs,
+                                    Diplomas, Higher Diplomas in association with leading Universities and educational
+                                    service providers in Sri Lanka.
                                 </p>
                                 <div class="text-center text-lg-start">
                                     <a href="https://sitc.lk"

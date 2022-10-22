@@ -5,8 +5,19 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Verify Your Email Address') }}</div>
-
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            @foreach($errors->all() as $error)
+                                <span>{{ $error }}</span></br>
+                            @endforeach
+                        </div>
+                    @endif
+                    @if(session()->has('message'))
+                        <div class="alert alert-success">
+                            {{ session()->get('message') }}
+                        </div>
+                    @endif
+                    <div class="card-header text-uppercase font-monospace">{{ __('Verify Your Email Address') }}</div>
                     <div class="card-body">
                         @if (session('resent'))
                             <div class="alert alert-success" role="alert">
@@ -19,8 +30,7 @@
                         <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
                             @csrf
                             <button type="submit"
-                                    class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>
-                            .
+                                    class="btn btn-link text-uppercase align-baseline m-0 p-0">{{ __('click here to request another') }}</button>
                         </form>
                     </div>
                 </div>
