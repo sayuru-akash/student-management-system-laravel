@@ -52,8 +52,17 @@
                 {{ session()->get('message') }}
             </div>
         @endif
+        @if(session()->has('err-message'))
+            <div class="alert alert-danger">
+                {{ session()->get('err-message') }}
+            </div>
+        @endif
         <div class="p-2 mb-4 text-center bg-light">
             <h1 class="m-2 text-uppercase font-monospace fs-2">Manage Enrolments</h1>
+            <a data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary w-25">Add New
+                Enrolment</a>
+            <a class="btn btn-sm btn-warning w-25" href="{{ route('admin.enrolmentsPending') }}">Filter Pending
+                Enrolments</a>
         </div>
         <div class="table-responsive">
             <table class="table table-primary table-striped table-hover">
@@ -69,7 +78,7 @@
                 </thead>
                 <tbody>
                 @foreach($enrolments as $enrolment)
-                    <tr class=@if($enrolment->enrolment_status) "table-success" @endif @if(!$enrolment->enrolment_status)
+                    <tr class=@if($enrolment->enrollment_status) "table-success" @endif @if(!$enrolment->enrollment_status)
                         "table-warning"
                     @endif>
                     <th scope="row">{{ $loop->index }}</th>
@@ -78,9 +87,9 @@
                     <td>{{ $enrolment->enrolment_id }}</td>
                     <td>#{{ $enrolment->invoice_id }}</td>
                     <td class="d-sm-none d-md-none d-lg-block">
-                        <a href="/admin/users/{{ $enrolment->id }}/approve"
+                        <a href="/admin/enrolments/approve?id={{ $enrolment->id }}"
                            class="btn btn-sm btn-success">Approve</a>
-                        <a href="/admin/users/{{ $enrolment->id }}/decline"
+                        <a href="/admin/enrolments/decline?id={{ $enrolment->id }}"
                            class="btn btn-sm btn-danger">Decline</a>
                     </td>
                     </tr>
@@ -90,6 +99,46 @@
         </div>
         <div class="d-flex justify-content-center">
             {!! $enrolments->links() !!}
+        </div>
+    </div>
+</div>
+
+<!-- Add Data Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Enrolment Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.enrolmentAdd') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Student ID</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="student_id" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">C/ Code</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_code" required>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add New</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

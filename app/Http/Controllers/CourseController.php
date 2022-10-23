@@ -43,7 +43,7 @@ class CourseController extends Controller
             } catch (\Exception $e) {
                 return redirect()->back()->withErrors('You have already requested enrolment to this course');
             }
-            return redirect()->back()->with('message', 'You have successfully enrolled in the course');
+            return redirect()->back()->with('message', 'You have successfully requested to enrol in the course');
         }
 
         return redirect("login")->withErrors('You are not allowed to access');

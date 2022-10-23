@@ -52,8 +52,14 @@
                 {{ session()->get('message') }}
             </div>
         @endif
+        @if(session()->has('err-message'))
+            <div class="alert alert-danger">
+                {{ session()->get('err-message') }}
+            </div>
+        @endif
         <div class="p-2 mb-4 text-center bg-light">
             <h1 class="m-2 text-uppercase font-monospace fs-2">Manage Students</h1>
+            <a data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary w-25">Add New Student</a>
         </div>
         <div class="table-responsive">
             <table class="table table-primary table-striped table-hover">
@@ -69,6 +75,7 @@
                 </tr>
                 </thead>
                 <tbody>
+
                 @foreach($users as $user)
                     <tr>
                         <th scope="row">{{ $loop->index }}</th>
@@ -78,9 +85,12 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone }}</td>
                         <td class="d-sm-none d-md-none d-lg-block">
-                            <a href="/admin/users/{{ $user->id }}/view" class="btn btn-sm btn-primary w-25">View</a>
-                            <a href="/admin/users/{{ $user->id }}/edit" class="btn btn-sm btn-warning w-25">Edit</a>
-                            <a href="/admin/users/{{ $user->id }}/delete" class="btn btn-sm btn-danger w-25">Delete</a>
+                            <a data-bs-toggle="modal" data-bs-target="#viewModal{{ $user->id }}"
+                               class="btn btn-sm btn-primary w-25">View</a>
+                            <a data-bs-toggle="modal" data-bs-target="#editModal{{ $user->id }}"
+                               class="btn btn-sm btn-warning w-25">Edit</a>
+                            <a href="/admin/users/delete?id={{ $user->id }}"
+                               class="btn btn-sm btn-danger w-25">Delete</a>
                         </td>
                     </tr>
                 @endforeach
@@ -89,6 +99,302 @@
         </div>
         <div class="d-flex justify-content-center">
             {!! $users->links() !!}
+        </div>
+    </div>
+</div>
+
+@foreach($users as $user)
+    <!-- View Data Modal -->
+    <div class="modal fade" id="viewModal{{ $user->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Student Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">First Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="fname" value="{{$user->fname}}" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Last Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="lname" value="{{$user->lname}}" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">NIC</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="nic" value="{{$user->nic}}" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Email</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="email" value="{{$user->email}}" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Phone</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="phone" value="{{$user->phone}}" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Birthday</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="birthday" value="{{$user->birthday}}"
+                                   disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Gender</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="gender" value="{{$user->gender}}" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Address</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="address" value="{{$user->address}}" disabled>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Data Modal -->
+    <div class="modal fade" id="editModal{{ $user->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Student Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('admin.userModify') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="id" value="{{$user->id}}">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">First Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control" name="fname" value="{{$user->fname}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Last Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control" name="lname" value="{{$user->lname}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">NIC</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control" name="nic" value="{{$user->nic}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="email" class="form-control" name="email" value="{{$user->email}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control" name="phone" value="{{$user->phone}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Birthday</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="date" class="form-control" name="birthday" value="{{$user->birthday}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Gender</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <select class="form-control" id="gender" name="gender">
+                                    <option disabled value="">Select Gender</option>
+                                    <option value="Male" @if($user->gender == "Male") selected @endif>Male</option>
+                                    <option value="Female" @if($user->gender == "Female") selected @endif>Female
+                                    </option>
+                                    <option value="Decline to answer"
+                                            @if($user->gender == "Decline to answer") selected @endif>Decline to answer
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Address</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control" name="address" value="{{$user->address}}">
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endforeach
+
+<!-- Add Data Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Student Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.userAdd') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">First Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="fname" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Last Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="lname" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">NIC</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="nic" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Email</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Phone</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="phone" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Birthday</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="date" class="form-control" name="birthday" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Gender</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <select class="form-control" id="gender" name="gender" required>
+                                <option selected disabled value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Decline to answer">Decline to answer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Password</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add New</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

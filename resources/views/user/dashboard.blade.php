@@ -152,7 +152,7 @@
                 </div>
                 <div class="card mb-3">
                     <div class="card-header text-uppercase font-monospace">Student Certifications</div>
-                    <div class="card-body">
+                    <div class="card-body d-none">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="card">

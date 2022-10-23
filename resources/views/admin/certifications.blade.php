@@ -52,6 +52,11 @@
                 {{ session()->get('message') }}
             </div>
         @endif
+        @if(session()->has('err-message'))
+            <div class="alert alert-danger">
+                {{ session()->get('err-message') }}
+            </div>
+        @endif
         <div class="alert-danger p-5 text-center"><h1>Under Development</h1></div>
     </div>
 </div>

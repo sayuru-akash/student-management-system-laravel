@@ -52,8 +52,15 @@
                 {{ session()->get('message') }}
             </div>
         @endif
+        @if(session()->has('err-message'))
+            <div class="alert alert-danger">
+                {{ session()->get('err-message') }}
+            </div>
+        @endif
         <div class="p-2 mb-4 text-center bg-light">
             <h1 class="m-2 text-uppercase font-monospace fs-2">Manage Courses</h1>
+            <a data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary w-25">Add New Course</a>
+            <a class="btn btn-sm btn-success w-25" href="{{ route('admin.coursesActive') }}">Filter Active Courses</a>
         </div>
         <div class="table-responsive">
             <table class="table table-primary table-striped table-hover">
@@ -78,9 +85,12 @@
                     <td>{{ $course->course_duration }}</td>
                     <td>{{ $course->course_start_date }}</td>
                     <td class="d-sm-none d-md-none d-lg-block">
-                        <a href="/admin/users/{{ $course->id }}/view" class="btn btn-sm btn-primary w-25">View</a>
-                        <a href="/admin/users/{{ $course->id }}/edit" class="btn btn-sm btn-warning w-25">Edit</a>
-                        <a href="/admin/users/{{ $course->id }}/delete" class="btn btn-sm btn-danger w-25">Delete</a>
+                        <a data-bs-toggle="modal" data-bs-target="#viewModal{{ $course->id }}"
+                           class="btn btn-sm btn-primary w-25">View</a>
+                        <a data-bs-toggle="modal" data-bs-target="#editModal{{ $course->id }}"
+                           class="btn btn-sm btn-warning w-25">Edit</a>
+                        <a href="/admin/courses/delete?id={{ $course->id }}"
+                           class="btn btn-sm btn-danger w-25">Delete</a>
                     </td>
                     </tr>
                 @endforeach
@@ -89,6 +99,270 @@
         </div>
         <div class="d-flex justify-content-center">
             {!! $courses->links() !!}
+        </div>
+    </div>
+</div>
+
+@foreach($courses as $course)
+    <!-- View Data Modal -->
+    <div class="modal fade" id="viewModal{{ $course->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Course Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Code</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_code" value="{{$course->course_code}}"
+                                   disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_name" value="{{$course->course_name}}"
+                                   disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Category</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_category"
+                                   value="{{$course->course_category}}" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Fee</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_fee" value="{{$course->course_fee}}"
+                                   disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Start Date</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_start_date"
+                                   value="{{$course->course_start_date}}" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Duration</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_duration"
+                                   value="{{$course->course_duration}}" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Status</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_status"
+                                   value="@if($course->course_status == 1) Active @endif @if($course->course_status == 0) Inactive @endif"
+                                   disabled>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Data Modal -->
+    <div class="modal fade" id="editModal{{ $course->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Course Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('admin.courseModify') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="id" value="{{$course->id}}">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Code</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control" name="course_code"
+                                       value="{{$course->course_code}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control" name="course_name"
+                                       value="{{$course->course_name}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Category</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control" name="course_category"
+                                       value="{{$course->course_category}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Fee</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="number" class="form-control" name="course_fee"
+                                       value="{{$course->course_fee}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Start Date</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="date" class="form-control" name="course_start_date"
+                                       value="{{$course->course_start_date}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Duration</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control" name="course_duration"
+                                       value="{{$course->course_duration}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Status</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <select class="form-control" id="course_status" name="course_status">
+                                    <option disabled value="">Select Status</option>
+                                    <option value="1" @if($course->course_status == 1) selected @endif>Active</option>
+                                    <option value="0" @if($course->course_status == 0) selected @endif>Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endforeach
+
+<!-- Add Data Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Course Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.courseAdd') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Code</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_code" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_name" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Category</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_category" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Fee</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="number" class="form-control" name="course_fee" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Start Date</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="date" class="form-control" name="course_start_date" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Duration</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_duration" required>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add New</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

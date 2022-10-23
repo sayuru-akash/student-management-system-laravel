@@ -10,10 +10,11 @@
                     </a>
                     2022 &copy; Copyright <strong><span>SITC Campus</span></strong>. All Rights Reserved
                     <div class="social-links mt-3">
-                        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://www.facebook.com/sitc.campus/" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.youtube.com/channel/UCLatD85fttdOLDxFJnCbXyQ" class="youtube"><i
+                                class="bi bi-youtube"></i></a>
+                        <a href="https://www.linkedin.com/company/sitc-campus/" class="linkedin"><i
+                                class="bi bi-linkedin"></i></a>
                     </div>
                 </div>
 
@@ -30,24 +31,27 @@
                 <div class="col-lg-2 col-6 footer-links">
                     <h4>Our Diplomas</h4>
                     <ul>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Design</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Development</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Management</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">HRM</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">Sociology</a></li>
                         <li><i class="bi bi-chevron-right"></i> <a href="#">Psychology</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">Business</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">ICT</a></li>
                     </ul>
                 </div>
 
                 <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
                     <h4>Contact Us</h4>
-                    <p>
-                        49, Court Road<br>
-                        Gampola<br>
-                        Sri Lanka <br><br>
-                        <strong>Phone:</strong> +94 081 3137 618<br>
-                        <strong>Email:</strong> info@sitc.lk<br>
-                    </p>
 
+                    <p>
+                        <a class="text-black text-decoration-none" href="https://goo.gl/maps/ghTKcMAghQn99fde8">
+                            49, Court Road,<br>
+                            Gampola,<br>
+                            Sri Lanka</a> <br><br>
+                        <a class="text-black text-decoration-none" href="tel:+940813137618">
+                            <strong>Phone:</strong> +94 081 3137 618<br></a>
+                        <a class="text-black text-decoration-none" href="mailto:info@sitc.lk">
+                            <strong>Email:</strong> info@sitc.lk<br></a>
+                    </p>
                 </div>
 
             </div>

@@ -15,6 +15,12 @@ class UserAuthController extends Controller
 {
     public function index()
     {
+        if (Auth::check() && Auth::user()->role == 'student') {
+            return redirect('/dashboard');
+        }
+        if (Auth::check() && Auth::user()->role == 'admin') {
+            return redirect('/admin');
+        }
         return view('auth.login');
     }
 
@@ -41,6 +47,12 @@ class UserAuthController extends Controller
 
     public function registration()
     {
+        if (Auth::check() && Auth::user()->role == 'student') {
+            return redirect('/dashboard');
+        }
+        if (Auth::check() && Auth::user()->role == 'admin') {
+            return redirect('/admin');
+        }
         return view('auth.register');
     }
 

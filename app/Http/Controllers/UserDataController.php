@@ -13,6 +13,8 @@ class UserDataController
             $user = Auth::user();
             if ($user->role == 'student') {
                 return view('user.dashboard', compact('user'));
+            } elseif ($user->role == 'admin') {
+                return redirect('/admin');
             } else {
                 return back()->withErrors('You are not allowed to access the requested resource!');
             }

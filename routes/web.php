@@ -74,6 +74,17 @@ Route::get('enrol', [CourseController::class, 'enrollUser'])->middleware('verifi
 
 Route::get('admin', [AdminController::class, 'index'])->middleware('verified')->name('admin.dashboard');
 Route::get('admin/users', [AdminController::class, 'users'])->middleware('verified')->name('admin.users');
+Route::post('admin/users', [AdminController::class, 'userDataModify'])->middleware('verified')->name('admin.userModify');
+Route::get('admin/users/delete', [AdminController::class, 'userDelete'])->middleware('verified')->name('admin.userDelete');
+Route::post('admin/users/add', [AdminController::class, 'userAdd'])->middleware('verified')->name('admin.userAdd');
 Route::get('admin/courses', [AdminController::class, 'courses'])->middleware('verified')->name('admin.courses');
+Route::post('admin/courses', [AdminController::class, 'courseDataModify'])->middleware('verified')->name('admin.courseModify');
+Route::get('admin/courses/delete', [AdminController::class, 'courseDelete'])->middleware('verified')->name('admin.courseDelete');
+Route::post('admin/courses/add', [AdminController::class, 'courseAdd'])->middleware('verified')->name('admin.courseAdd');
+Route::get('admin/courses/active', [AdminController::class, 'coursesActive'])->middleware('verified')->name('admin.coursesActive');
 Route::get('admin/enrolments', [AdminController::class, 'enrolments'])->middleware('verified')->name('admin.enrolments');
+Route::get('admin/enrolments/approve', [AdminController::class, 'enrolmentApprove'])->middleware('verified')->name('admin.enrolmentApprove');
+Route::get('admin/enrolments/decline', [AdminController::class, 'enrolmentDecline'])->middleware('verified')->name('admin.enrolmentDecline');
+Route::post('admin/enrolments/add', [AdminController::class, 'enrolmentAdd'])->middleware('verified')->name('admin.enrolmentAdd');
+Route::get('admin/enrolments/pending', [AdminController::class, 'enrolmentsPending'])->middleware('verified')->name('admin.enrolmentsPending');
 Route::get('admin/certifications', [AdminController::class, 'certifications'])->middleware('verified')->name('admin.certifications');
