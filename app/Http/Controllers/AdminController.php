@@ -10,6 +10,8 @@ use Hash;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Module;
+use App\Models\Certificate;
 
 class AdminController extends Controller
 {
@@ -21,7 +23,9 @@ class AdminController extends Controller
                 $users = User::all()->where('role', 'student')->count();
                 $courses = Course::all()->where('course_status', true)->count();
                 $enrolments = Enrollment::all()->where('enrollment_status', false)->count();
-                return view('admin.dashboard', compact('user', 'users', 'courses', 'enrolments'));
+                $modules = Module::all()->count();
+                $certificates = Certificate::all()->count();
+                return view('admin.dashboard', compact('user', 'users', 'courses', 'enrolments', 'modules', 'certificates'));
             } else {
                 return back()->withErrors('You are not allowed to access the requested resource!');
             }
@@ -221,6 +225,49 @@ class AdminController extends Controller
         }
     }
 
+    public function modules()
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->role == 'admin') {
+                $modules = Module::orderBy('id', 'DESC')->paginate(10);
+                $course_codes = Course::select('course_code')->get();
+                return view('admin.modules', compact('user', 'modules', 'course_codes'));
+            } else {
+                return back()->withErrors('You are not allowed to access the requested resource!');
+            }
+            return redirect("login")->withErrors('You are not allowed to access the requested resource!');
+        }
+    }
+
+    public function moduleAdd(Request $request)
+    {
+        if (Auth::check() && Auth::user()->role == 'admin') {
+            $request->validate([
+                'course_code' => 'required',
+                'module_name' => 'required',
+            ]);
+
+            $module = new Module();
+            $module->course_code = $request->course_code;
+            $module->module_name = $request->module_name;
+            $module->save();
+
+            return redirect()->back()->with('message', 'Module added successfully');
+        }
+        return redirect("login")->withErrors('You are not allowed to access the requested resource!');
+    }
+
+    public function moduleDelete(Request $request)
+    {
+        if (Auth::check() && Auth::user()->role == 'admin') {
+            $module = Module::find($request->id);
+            $module->delete();
+            return redirect()->back()->with('err-message', 'Module deleted successfully');
+        }
+        return redirect("login")->withErrors('You are not allowed to access the requested resource!');
+    }
+
     public function enrolments()
     {
         if (Auth::check()) {
@@ -307,12 +354,80 @@ class AdminController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->role == 'admin') {
-                $certifications = Enrollment::all()->where('enrollment_status', true);
-                return view('admin.certifications', compact('user', 'certifications'));
+                $certificates = Certificate::orderBy('id', 'DESC')->leftJoin('users', 'users.student_id', '=', 'certificates.student_id')->leftJoin('courses', 'courses.course_code', '=', 'certificates.course_code')->select('certificates.*', 'users.student_id', 'users.fname', 'users.lname', 'users.nic', 'users.phone', 'courses.course_name')->paginate(10);
+                $course_codes = Course::select('course_code')->get();
+                $enrolments = Enrollment::all()->where('enrollment_status', true);
+                return view('admin.certifications', compact('user', 'certificates', 'course_codes', 'enrolments'));
             } else {
                 return back()->withErrors('You are not allowed to access the requested resource!');
             }
             return redirect("login")->withErrors('You are not allowed to access the requested resource!');
         }
+    }
+
+    public function certificateDataModify(Request $request)
+    {
+        if (Auth::check() && Auth::user()->role == 'admin') {
+            $request->validate([
+                'certificate_id' => 'required',
+                'course_result' => 'required',
+            ]);
+            $enrolment = Enrollment::where('enrolment_id', $request->certificate_id)->first();
+            if ($enrolment) {
+                $certificate = Certificate::where('certificate_id', $request->certificate_id)->first();
+                if ($certificate) {
+                    $certificate->course_result = $request->course_result;
+                    $certificate->save();
+                    return redirect()->back()->with('message', 'Certificate data modified successfully');
+                } else {
+                    return redirect()->back()->withErrors('Invalid certificate id');
+                }
+            } else {
+                return redirect()->back()->withErrors('Invalid certificate id');
+            }
+            return redirect()->back()->with('message', 'Certificate data modified successfully');
+        }
+        return redirect("login")->withErrors('You are not allowed to access the requested resource!');
+    }
+
+    public function certificateAdd(Request $request)
+    {
+        if (Auth::check() && Auth::user()->role == 'admin') {
+            $request->validate([
+                'certificate_id' => 'required',
+                'course_result' => 'required',
+            ]);
+
+            $enrolment = Enrollment::where('enrolment_id', $request->certificate_id)->first();
+            if ($enrolment) {
+                $user = User::where('id', $enrolment->user_id)->first();
+                $course = Course::where('id', $enrolment->course_id)->first();
+                if ($user && $course) {
+                    $certificate = new Certificate();
+                    $certificate->certificate_id = $enrolment->enrolment_id;
+                    $certificate->student_id = $user->student_id;
+                    $certificate->course_code = $course->course_code;
+                    $certificate->course_result = $request->course_result;
+                    $certificate->save();
+                    return redirect()->back()->with('message', 'Certificate added successfully');
+                } else {
+                    return redirect()->back()->withErrors('Invalid user id or course id detected');
+                }
+            } else {
+                return redirect()->back()->withErrors('Invalid certificate id');
+            }
+            return redirect()->back()->with('message', 'Certificate added successfully');
+        }
+        return redirect("login")->withErrors('You are not allowed to access the requested resource!');
+    }
+
+    public function certificateDelete(Request $request)
+    {
+        if (Auth::check() && Auth::user()->role == 'admin') {
+            $certificate = Certificate::find($request->id);
+            $certificate->delete();
+            return redirect()->back()->with('err-message', 'Certificate deleted successfully');
+        }
+        return redirect("login")->withErrors('You are not allowed to access the requested resource!');
     }
 }
