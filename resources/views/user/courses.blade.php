@@ -22,7 +22,7 @@
                     <a class="nav-link" href="/courses">Courses</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://verify.sitc.lk">Results</a>
+                    <a class="nav-link" href="/verify-certificate">Results</a>
                 </li>
             </ul>
         </div>
@@ -63,7 +63,7 @@
                                 <p class="text-muted text-lowercase mb-2">{{ $user->email }}</p>
                                 <p class="font-monospace text-uppercase">{{ 'ID: '.$user->student_id }}</p>
                                 <a class="btn btn-primary" href="/courses">View Courses</a>
-                                <a type="button" class="btn btn-outline-primary" href="https://verify.sitc.lk">
+                                <a type="button" class="btn btn-outline-primary" href="/verify-certificate">
                                     Verify Results
                                 </a>
                             </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\UserDataController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CertificateController;
 use Illuminate\Http\Request;
 
 /*
@@ -59,7 +60,6 @@ Route::group(['middleware' => ['throttle:6,1']], function () {
 });
 Auth::routes(['verify' => true]);
 
-
 Route::get('login', [UserAuthController::class, 'index'])->middleware('guest')->name('login');
 Route::post('login', [UserAuthController::class, 'customLogin'])->name('login.custom');
 Route::get('signup', [UserAuthController::class, 'registration'])->middleware('guest')->name('register-user');
@@ -82,9 +82,19 @@ Route::post('admin/courses', [AdminController::class, 'courseDataModify'])->midd
 Route::get('admin/courses/delete', [AdminController::class, 'courseDelete'])->middleware('verified')->name('admin.courseDelete');
 Route::post('admin/courses/add', [AdminController::class, 'courseAdd'])->middleware('verified')->name('admin.courseAdd');
 Route::get('admin/courses/active', [AdminController::class, 'coursesActive'])->middleware('verified')->name('admin.coursesActive');
+Route::get('admin/modules', [AdminController::class, 'modules'])->middleware('verified')->name('admin.modules');
+Route::post('admin/modules/add', [AdminController::class, 'moduleAdd'])->middleware('verified')->name('admin.moduleAdd');
+Route::get('admin/modules/delete', [AdminController::class, 'moduleDelete'])->middleware('verified')->name('admin.moduleDelete');
 Route::get('admin/enrolments', [AdminController::class, 'enrolments'])->middleware('verified')->name('admin.enrolments');
 Route::get('admin/enrolments/approve', [AdminController::class, 'enrolmentApprove'])->middleware('verified')->name('admin.enrolmentApprove');
 Route::get('admin/enrolments/decline', [AdminController::class, 'enrolmentDecline'])->middleware('verified')->name('admin.enrolmentDecline');
 Route::post('admin/enrolments/add', [AdminController::class, 'enrolmentAdd'])->middleware('verified')->name('admin.enrolmentAdd');
 Route::get('admin/enrolments/pending', [AdminController::class, 'enrolmentsPending'])->middleware('verified')->name('admin.enrolmentsPending');
 Route::get('admin/certifications', [AdminController::class, 'certifications'])->middleware('verified')->name('admin.certifications');
+Route::post('admin/certifications', [AdminController::class, 'certificateDataModify'])->middleware('verified')->name('admin.certificateModify');
+Route::post('admin/certifications/add', [AdminController::class, 'certificateAdd'])->middleware('verified')->name('admin.certificateAdd');
+Route::get('admin/certifications/delete', [AdminController::class, 'certificateDelete'])->middleware('verified')->name('admin.certificateDelete');
+
+
+Route::get('verify-certificate', [CertificateController::class, 'index'])->name('verifyCertificate');
+Route::get('generate-transcript', [CertificateController::class, 'generateTranscriptPDF'])->name('generateTranscript');

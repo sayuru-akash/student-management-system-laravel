@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Certificate;
 
 class UserDataController
 {
@@ -12,7 +13,8 @@ class UserDataController
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->role == 'student') {
-                return view('user.dashboard', compact('user'));
+                $certificates = Certificate::where('student_id', $user->student_id)->paginate(6);
+                return view('user.dashboard', compact('user', 'certificates'));
             } elseif ($user->role == 'admin') {
                 return redirect('/admin');
             } else {

@@ -101,6 +101,16 @@
                             <div class="col-sm-6">
                                 <div class="card">
                                     <div class="card-body">
+                                        <h5 class="card-title">Modules</h5>
+                                        <p class="card-text">You currently have {{$modules}} modules registered in
+                                            the student portal.</p>
+                                        <a href="/admin/modules" class="btn btn-primary">Manage Modules</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-body">
                                         <h5 class="card-title">Enrolments</h5>
                                         <p class="card-text">You currently have {{$enrolments}} enrolments pending in
                                             the student portal.</p>
@@ -108,12 +118,15 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row mt-2 mb-2">
+
                             <div class="col-sm-6">
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Certifications</h5>
-                                        <p class="card-text">You currently have 0 certifications published in the
-                                            student portal</p>
+                                        <p class="card-text">You currently have {{$certificates}} certifications
+                                            published in the student portal</p>
                                         <a href="/admin/certifications" class="btn btn-primary">Manage
                                             Certifications</a>
                                     </div>

@@ -10,6 +10,7 @@
             <ul>
                 <li><a class="nav-link scrollto active" href="/">Home</a></li>
                 <li><a class="nav-link scrollto" href="/#about">About</a></li>
+                <li><a class="nav-link" href="/verify-certificate">Verify Certificate</a></li>
                 <li><a class="nav-link" href="https://wa.me/94715258653">Contact</a></li>
                 <li><a class="getstarted" href="/dashboard">Access Student Area</a></li>
             </ul>
