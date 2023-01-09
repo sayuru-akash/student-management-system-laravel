@@ -399,6 +399,9 @@ class AdminController extends Controller
             ]);
 
             $enrolment = Enrollment::where('enrolment_id', $request->certificate_id)->first();
+            if (Certificate::where('certificate_id', $request->certificate_id)->first()) {
+                return redirect()->back()->withErrors('Certificate already exists');
+            }
             if ($enrolment) {
                 $user = User::where('id', $enrolment->user_id)->first();
                 $course = Course::where('id', $enrolment->course_id)->first();

@@ -269,14 +269,19 @@
                             <h6 class="col-form-label">Certificate ID</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input class="form-control" list="datalistOptions" id="certificate_id" name="certificate_id"
-                                   required>
-                            <datalist id="datalistOptions">
+                            <select class="form-control" name="certificate_id" id="certificate_id">
                                 @foreach($enrolments as $enrolment)
-                                    <option
-                                        value="{{$enrolment->enrolment_id}}">{{$enrolment->enrolment_id}}</option>
+                                    <option value="{{$enrolment->enrolment_id}}">{{$enrolment->enrolment_id}}</option>
                                 @endforeach
-                            </datalist>
+                            </select>
+                            {{--                            <input class="form-control" list="datalistOptions" id="certificate_id" name="certificate_id"--}}
+                            {{--                                   required>--}}
+                            {{--                            <datalist id="datalistOptions">--}}
+                            {{--                                @foreach($enrolments as $enrolment)--}}
+                            {{--                                    <option--}}
+                            {{--                                        value="{{$enrolment->enrolment_id}}">{{$enrolment->enrolment_id}}</option>--}}
+                            {{--                                @endforeach--}}
+                            {{--                            </datalist>--}}
                         </div>
                     </div>
                     <br>

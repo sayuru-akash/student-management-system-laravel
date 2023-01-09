@@ -7,4 +7,5 @@
 <!-- load local css -->
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
+<!-- responsive meta tag -->
+<meta name="viewport" content="width=device-width">

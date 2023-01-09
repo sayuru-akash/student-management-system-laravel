@@ -23,6 +23,7 @@
                                 @csrf
                                 <div class="row">
                                     <div class="form-group mb-3 col-md-6">
+                                        <label for="first_name">First Name</label>
                                         <input type="text" placeholder="First Name" id="first_name" class="form-control"
                                                name="fname"
                                                required autofocus>
@@ -31,6 +32,7 @@
                                         @endif
                                     </div>
                                     <div class="form-group mb-3  col-md-6">
+                                        <label for="last_name">Last Name</label>
                                         <input type="text" placeholder="Last Name" id="last_name" class="form-control"
                                                name="lname"
                                                required autofocus>
@@ -40,6 +42,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="nic">N.I.C. No:</label>
                                     <input type="text" placeholder="NIC Number" id="nic" class="form-control" name="nic"
                                            required>
                                     @if ($errors->has('nic'))
@@ -47,6 +50,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="birthday">Date of Birth:</label>
                                     <input type="date" id="birthday"
                                            class="form-control" name="birthday"
                                            required>
@@ -55,17 +59,18 @@
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="gender">Gender:</label>
                                     <select class="form-control" id="gender" name="gender">
                                         <option selected disabled value="">Select Gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
-                                        <option value="Decline to answer">Decline to answer</option>
                                     </select>
                                     @if ($errors->has('gender'))
                                         <span class="text-danger">{{ $errors->first('gender') }}</span>
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="email">Email:</label>
                                     <input type="text" placeholder="Email" id="email_address" class="form-control"
                                            name="email" required autofocus>
                                     @if ($errors->has('email'))
@@ -73,6 +78,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="phone">Mobile Number:</label>
                                     <input type="text" placeholder="Mobile Number" id="phone" class="form-control"
                                            name="phone" required autofocus>
                                     <small class="text-muted">Use the local format, e.g. 0771234567</small>
@@ -81,15 +87,16 @@
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="password">Password:</label>
                                     <input type="password" placeholder="Password" id="password" class="form-control"
                                            name="password" required>
-                                    <small class="text-muted">Use at least 8 characters, including a number, a
-                                        capital letter and a simple letter</small>
+                                    <small class="text-muted">Use at least 8 characters</small>
                                     @if ($errors->has('password'))
                                         <span class="text-danger">{{ $errors->first('password') }}</span>
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="password_confirmation">Repeat Password:</label>
                                     <input type="password" placeholder="Confirm Password" id="password_confirmation"
                                            class="form-control"
                                            name="password_confirmation" required>
