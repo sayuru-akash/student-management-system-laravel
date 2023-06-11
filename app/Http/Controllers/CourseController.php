@@ -41,9 +41,9 @@ class CourseController extends Controller
                     'invoice_id' => $invoice,
                 ]);
             } catch (\Exception $e) {
-                return redirect()->back()->withErrors('You have already requested enrolment to this course');
+                return redirect()->back()->withErrors('You have already requested enrolment to this course. Your invoice number is #' . $invoice);
             }
-            return redirect()->back()->with('message', 'You have successfully requested to enrol in the course');
+            return redirect()->back()->with('message', 'You have successfully requested to enrol in the course. Your invoice number is #' . $invoice);
         }
 
         return redirect("login")->withErrors('You are not allowed to access');

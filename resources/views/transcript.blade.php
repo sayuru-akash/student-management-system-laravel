@@ -35,7 +35,7 @@
             This is to certify that <strong>{{$certificate->fname . ' ' . $certificate->lname}}</strong> has
             successfully completed the
             <strong>{{$certificate->course_name}}</strong> conducted by the SITC Campus in the academic year
-            <strong>2022</strong> and achieved a final grade of <strong>{{$certificate->course_result}}</strong>.
+            <strong>{{$certificate->course_year}}</strong> and achieved a final grade of <strong>{{$certificate->course_result}}</strong>.
         </p>
         <p>
             <strong>

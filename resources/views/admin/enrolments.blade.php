@@ -22,6 +22,9 @@
                     <a class="nav-link" href="/admin/courses">Courses</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/admin/modules">Modules</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/admin/enrolments">Enrolments</a>
                 </li>
                 <li class="nav-item">
@@ -64,6 +67,12 @@
             <a class="btn btn-sm btn-warning w-25" href="{{ route('admin.enrolmentsPending') }}">Filter Pending
                 Enrolments</a>
         </div>
+        <form class="mt-2" action="{{ route('admin.enrolments') }}" method="GET">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search..." name="search" id="search-input" @if(isset($_GET['search'])) value="{{ $_GET['search'] }}" @endif>
+                <button class="btn btn-outline-primary" type="submit" id="search-btn">Search</button>
+            </div>
+        </form>
         <div class="table-responsive">
             <table class="table table-primary table-striped table-hover">
                 <thead>
@@ -85,10 +94,14 @@
                     <td>{{ $enrolment->student_id }}</td>
                     <td>{{ $enrolment->course_name }}</td>
                     <td>{{ $enrolment->enrolment_id }}</td>
-                    <td>#{{ $enrolment->invoice_id }}</td>
+                    <td># {{ $enrolment->invoice_id }}</td>
                     <td class="d-sm-none d-md-none d-lg-block">
-                        <a href="/admin/enrolments/approve?id={{ $enrolment->id }}"
-                           class="btn btn-sm btn-success">Approve</a>
+                        @if(!$enrolment->enrollment_status)
+                            <a href="/admin/enrolments/approve?id={{ $enrolment->id }}"
+                               class="btn btn-sm btn-success">Approve</a>
+                        @else
+                            <button type="button" class="btn btn-sm btn-secondary" disabled>Approved</button>
+                        @endif
                         <a href="/admin/enrolments/decline?id={{ $enrolment->id }}"
                            class="btn btn-sm btn-danger">Decline</a>
                     </td>
@@ -96,9 +109,7 @@
                 @endforeach
                 </tbody>
             </table>
-        </div>
-        <div class="d-flex justify-content-center">
-            {!! $enrolments->links() !!}
+            {{ $enrolments->links() }}
         </div>
     </div>
 </div>
@@ -126,10 +137,15 @@
                     <br>
                     <div class="row">
                         <div class="col-sm-3">
-                            <h6 class="col-form-label">C/ Code</h6>
+                            <h6 class="col-form-label">Course Code</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" name="course_code" required>
+                            <select class="form-select" name="course_code" required>
+                                <option selected disabled value="">Select Course</option>
+                                @foreach($courses as $course)
+                                    <option value="{{ $course->course_code }}">{{ $course->course_code }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <br>

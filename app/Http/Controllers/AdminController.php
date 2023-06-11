@@ -12,6 +12,8 @@ use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Module;
 use App\Models\Certificate;
+use App\Exports\UsersPerCourseExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -33,12 +35,25 @@ class AdminController extends Controller
         }
     }
 
-    public function users()
+    public function users(Request $request)
     {
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->role == 'admin') {
-                $users = User::orderBy('id', 'DESC')->where('role', 'student')->paginate(10);
+                if ($request->search != null) {
+                    $users = User::where('role', 'student')->where('fname', 'LIKE', '%' . $request->search . '%')->orWhere('lname', 'LIKE', '%' . $request->search . '%')->orWhere('email', 'LIKE', '%' . $request->search . '%')->orWhere('phone', 'LIKE', '%' . $request->search . '%')->orWhere('nic', 'LIKE', '%' . $request->search . '%')->paginate(10);
+                } else{
+                    $users = User::orderBy('id', 'DESC')->where('role', 'student')->paginate(10);
+                }
+                foreach ($users as $user) {
+                    $enrolments = Enrollment::where('user_id', $user->id)->where('enrollment_status', '1')->get();
+                    foreach ($enrolments as $enrolment) {
+                        $enrolment->course_name = Course::where('id', $enrolment->course_id)->first()->course_name;
+                        $enrolment->course_code = Course::where('id', $enrolment->course_id)->first()->course_code;
+                        $enrolment->course_year = Course::where('id', $enrolment->course_id)->first()->course_year;
+                    }
+                    $user->enrolments = $enrolments;
+                }
                 return view('admin.users', compact('users'));
             } else {
                 return back()->withErrors('You are not allowed to access the requested resource!');
@@ -102,7 +117,7 @@ class AdminController extends Controller
                 'gender' => 'required',
                 'email' => 'required|email:rfc,dns|unique:users',
                 'phone' => 'required|digits:10|unique:users',
-                'password' => 'required|min:8|regex:/[a-zA-Z]/|regex:/[0-9]/',
+                'password' => 'required|min:8|regex:/[0-9]/',
             ]);
 
             $student_id = IdGenerator::generate(['table' => 'users', 'field' => 'student_id', 'length' => 10, 'prefix' => 'ST-' . date('y'), 'reset_on_prefix_change' => true]);
@@ -130,11 +145,15 @@ class AdminController extends Controller
         ]);
     }
 
-    public function courses()
+    public function courses(Request $request)
     {
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->role == 'admin') {
+                if ($request->search != null) {
+                    $courses = Course::where('course_code', 'LIKE', '%' . $request->search . '%')->orWhere('course_name', 'LIKE', '%' . $request->search . '%')->orWhere('course_category', 'LIKE', '%' . $request->search . '%')->paginate(10);
+                    return view('admin.courses', compact('courses'));
+                }
                 $courses = Course::orderBy('id', 'DESC')->paginate(10);
                 return view('admin.courses', compact('courses'));
             } else {
@@ -166,6 +185,9 @@ class AdminController extends Controller
             if (isset($request->course_duration)) {
                 $course->course_duration = $request->course_duration;
             }
+            if (isset($request->course_year)) {
+                $course->course_year = $request->course_year;
+            }
             if (isset($request->course_status)) {
                 $course->course_status = $request->course_status;
             }
@@ -195,6 +217,7 @@ class AdminController extends Controller
                 'course_fee' => 'required|numeric',
                 'course_start_date' => 'required|date',
                 'course_duration' => 'required',
+                'course_year' => 'required',
             ]);
 
             $course = new Course();
@@ -204,6 +227,7 @@ class AdminController extends Controller
             $course->course_fee = $request->course_fee;
             $course->course_start_date = $request->course_start_date;
             $course->course_duration = $request->course_duration;
+            $course->course_year = $request->course_year;
             $course->save();
 
             return redirect()->back()->with('message', 'Course added successfully');
@@ -225,11 +249,26 @@ class AdminController extends Controller
         }
     }
 
-    public function modules()
+    public function downloadCourseStudentsList(Request $request)
+    {
+        if (Auth::check() && Auth::user()->role == 'admin') {
+            $course_code = $request->id;
+            
+            return (new UsersPerCourseExport($course_code))->download('Students List - ' . $course_code .'.xlsx');
+        }
+        return redirect("login")->withErrors('You are not allowed to access the requested resource!');
+    }
+
+    public function modules(Request $request)
     {
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->role == 'admin') {
+                if ($request->search != null) {
+                    $modules = Module::where('course_code', 'LIKE', '%' . $request->search . '%')->orWhere('module_name', 'LIKE', '%' . $request->search . '%')->paginate(10);
+                    $course_codes = Course::select('course_code')->get();
+                    return view('admin.modules', compact('user', 'modules', 'course_codes'));
+                }
                 $modules = Module::orderBy('id', 'DESC')->paginate(10);
                 $course_codes = Course::select('course_code')->get();
                 return view('admin.modules', compact('user', 'modules', 'course_codes'));
@@ -268,13 +307,19 @@ class AdminController extends Controller
         return redirect("login")->withErrors('You are not allowed to access the requested resource!');
     }
 
-    public function enrolments()
+    public function enrolments(Request $request)
     {
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->role == 'admin') {
-                $enrolments = Enrollment::orderBy('id', 'DESC')->leftJoin('users', 'users.id', '=', 'enrollments.user_id')->leftJoin('courses', 'courses.id', '=', 'enrollments.course_id')->select('enrollments.*', 'users.student_id', 'courses.course_name')->paginate(15);
-                return view('admin.enrolments', compact('enrolments'));
+                if ($request->search != null) {
+                    $enrolments = Enrollment::orderBy('id', 'DESC')->leftJoin('users', 'users.id', '=', 'enrollments.user_id')->leftJoin('courses', 'courses.id', '=', 'enrollments.course_id')->select('enrollments.*', 'users.student_id', 'courses.course_name')->where('student_id', 'LIKE', '%' . $request->search . '%')->orWhere('course_name', 'LIKE', '%' . $request->search . '%')->orWhere('invoice_id', 'LIKE', '%' . $request->search . '%')->paginate(10);
+                    $courses = Course::select('id', 'course_code')->where('course_status', true)->get();
+                    return view('admin.enrolments', compact('enrolments', 'courses'));
+                }
+                $enrolments = Enrollment::orderBy('id', 'DESC')->leftJoin('users', 'users.id', '=', 'enrollments.user_id')->leftJoin('courses', 'courses.id', '=', 'enrollments.course_id')->select('enrollments.*', 'users.student_id', 'courses.course_name')->paginate(10);
+                $courses = Course::select('id', 'course_code')->where('course_status', true)->get();
+                return view('admin.enrolments', compact('enrolments', 'courses'));
             } else {
                 return back()->withErrors('You are not allowed to access the requested resource!');
             }
@@ -309,10 +354,14 @@ class AdminController extends Controller
             $request->validate([
                 'student_id' => 'required',
                 'course_code' => 'required',
-            ]);
+            ]); 
 
             $user = User::where('student_id', $request->student_id)->first();
             $course = Course::where('course_code', $request->course_code)->first();
+
+            if (Enrollment::where('user_id', $user->id)->where('course_id', $course->id)->exists()) {
+                return redirect()->back()->with('err-message', 'Enrolment already exists');
+            }
 
             if ($user && $course) {
                 $enrollment = IdGenerator::generate(['table' => 'enrollments', 'length' => 15, 'field' => 'enrolment_id', 'prefix' => date('y') . '-' . $course->course_code . '-ST-1', 'reset_on_prefix_change' => false]);
@@ -335,13 +384,19 @@ class AdminController extends Controller
         return redirect("login")->withErrors('You are not allowed to access the requested resource!');
     }
 
-    public function enrolmentsPending()
+    public function enrolmentsPending(Request $request)
     {
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->role == 'admin') {
-                $enrolments = Enrollment::where('enrollment_status', false)->orderBy('id', 'DESC')->leftJoin('users', 'users.id', '=', 'enrollments.user_id')->leftJoin('courses', 'courses.id', '=', 'enrollments.course_id')->select('enrollments.*', 'users.student_id', 'courses.course_name')->paginate(15);
-                return view('admin.enrolments', compact('enrolments'));
+                if ($request->search != null) {
+                    $enrolments = Enrollment::where('enrollment_status', false)->orderBy('id', 'DESC')->leftJoin('users', 'users.id', '=', 'enrollments.user_id')->leftJoin('courses', 'courses.id', '=', 'enrollments.course_id')->select('enrollments.*', 'users.student_id', 'courses.course_name')->where('student_id', 'LIKE', '%' . $request->search . '%')->orWhere('course_name', 'LIKE', '%' . $request->search . '%')->orWhere('invoice_id', 'LIKE', '%' . $request->search . '%')->paginate(10);
+                    $courses = Course::select('id', 'course_code')->where('course_status', true)->get();
+                    return view('admin.enrolments', compact('enrolments', 'courses'));
+                }
+                $enrolments = Enrollment::where('enrollment_status', false)->orderBy('id', 'DESC')->leftJoin('users', 'users.id', '=', 'enrollments.user_id')->leftJoin('courses', 'courses.id', '=', 'enrollments.course_id')->select('enrollments.*', 'users.student_id', 'courses.course_name')->paginate(10);
+                $courses = Course::select('id', 'course_code')->where('course_status', true)->get();
+                return view('admin.enrolments', compact('enrolments', 'courses'));
             } else {
                 return back()->withErrors('You are not allowed to access the requested resource!');
             }
@@ -349,12 +404,16 @@ class AdminController extends Controller
         }
     }
 
-    public function certifications()
+    public function certifications(Request $request)
     {
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->role == 'admin') {
-                $certificates = Certificate::orderBy('id', 'DESC')->leftJoin('users', 'users.student_id', '=', 'certificates.student_id')->leftJoin('courses', 'courses.course_code', '=', 'certificates.course_code')->select('certificates.*', 'users.student_id', 'users.fname', 'users.lname', 'users.nic', 'users.phone', 'courses.course_name')->paginate(10);
+                if ($request->search != null) {
+                    $certificates = Certificate::orderBy('id', 'DESC')->leftJoin('users', 'users.student_id', '=', 'certificates.student_id')->leftJoin('courses', 'courses.course_code', '=', 'certificates.course_code')->select('certificates.*', 'users.student_id', 'users.fname', 'users.lname', 'users.nic', 'users.phone', 'courses.course_name')->where('certificates.student_id', 'LIKE', '%' . $request->search . '%')->orWhere('certificates.course_code', 'LIKE', '%' . $request->search . '%')->orWhere('certificates.certificate_id', 'LIKE', '%' . $request->search . '%')->paginate(10);
+                } else {
+                    $certificates = Certificate::orderBy('id', 'DESC')->leftJoin('users', 'users.student_id', '=', 'certificates.student_id')->leftJoin('courses', 'courses.course_code', '=', 'certificates.course_code')->select('certificates.*', 'users.student_id', 'users.fname', 'users.lname', 'users.nic', 'users.phone', 'courses.course_name')->paginate(10);
+                }
                 $course_codes = Course::select('course_code')->get();
                 $enrolments = Enrollment::all()->where('enrollment_status', true);
                 return view('admin.certifications', compact('user', 'certificates', 'course_codes', 'enrolments'));
@@ -399,9 +458,6 @@ class AdminController extends Controller
             ]);
 
             $enrolment = Enrollment::where('enrolment_id', $request->certificate_id)->first();
-            if (Certificate::where('certificate_id', $request->certificate_id)->first()) {
-                return redirect()->back()->withErrors('Certificate already exists');
-            }
             if ($enrolment) {
                 $user = User::where('id', $enrolment->user_id)->first();
                 $course = Course::where('id', $enrolment->course_id)->first();

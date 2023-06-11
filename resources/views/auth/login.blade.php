@@ -52,9 +52,8 @@
                                         Admission?</a>
                                 </div>
                                 <div class="mt-3 text-center">
-                                    <a href="{{ route('password.request') }}" class="text-decoration-none">Have an
-                                        account | Forgot
-                                        Password?</a>
+                                    <a href="{{ route('password.request') }}" class="text-decoration-none">Forgot
+                                        Password? | Reset</a>
                                 </div>
                             </form>
                         </div>

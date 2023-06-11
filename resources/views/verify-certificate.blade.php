@@ -34,11 +34,11 @@
                                 @endisset
                                 <form class="mt-2" action="{{ route('verifyCertificate') }}" method="GET">
                                     <input type="text" class="form-control form-control-lg" name="search"
-                                           placeholder="Enter Certificate ID"
+                                           placeholder="Enter Certificate ID" required
                                            @isset($certificate) value="{{$certificate->certificate_id}}"
                                            readonly @endisset>
                                     @if (!@isset ($certificate))
-                                        <button type=" submit" class="h-100 btn-get-started scrollto d-inline-flex
+                                        <button type="submit" class="border-0 h-100 btn-get-started scrollto d-inline-flex
                                     align-items-center justify-content-center align-self-center">
                                             <span>Verify</span><i class="bi bi-arrow-right"></i>
                                         </button>

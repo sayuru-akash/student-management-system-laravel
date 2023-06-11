@@ -66,7 +66,7 @@ class UserAuthController extends Controller
             'gender' => 'required',
             'email' => 'required|email:rfc,dns|unique:users',
             'phone' => 'required|digits:10|unique:users',
-            'password' => 'required|min:8|required_with:password_confirmation|same:password_confirmation',
+            'password' => 'required|min:8|regex:/[0-9]/|required_with:password_confirmation|same:password_confirmation',
             'password_confirmation' => 'required',
             'agree' => 'required',
         ]);

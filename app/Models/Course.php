@@ -16,6 +16,7 @@ class Course extends Model
         'course_fee',
         'course_start_date',
         'course_duration',
+        'course_year',
         'course_status',
     ];
 }

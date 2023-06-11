@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Certificate;
+use App\Models\Enrollment;
+use App\Models\Course;
 
 class UserDataController
 {
@@ -13,8 +15,19 @@ class UserDataController
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->role == 'student') {
-                $certificates = Certificate::where('student_id', $user->student_id)->paginate(6);
-                return view('user.dashboard', compact('user', 'certificates'));
+                $certificates = Certificate::where('student_id', $user->student_id)->get();
+                $enrolments = Enrollment::where('user_id', $user->id)->get();
+                foreach ($certificates as $certificate) {
+                    $certificate->course_name = Course::where('course_code', $certificate->course_code)->first()->course_name;
+                    $certificate->course_code = Course::where('course_code', $certificate->course_code)->first()->course_code;
+                    $certificate->course_year = Course::where('course_code', $certificate->course_code)->first()->course_year;
+                }
+                foreach ($enrolments as $enrolment) {
+                    $enrolment->course_name = Course::where('id', $enrolment->course_id)->first()->course_name;
+                    $enrolment->course_code = Course::where('id', $enrolment->course_id)->first()->course_code;
+                    $enrolment->course_year = Course::where('id', $enrolment->course_id)->first()->course_year;
+                }
+                return view('user.dashboard', compact('user', 'certificates', 'enrolments'));
             } elseif ($user->role == 'admin') {
                 return redirect('/admin');
             } else {

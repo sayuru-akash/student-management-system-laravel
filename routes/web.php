@@ -98,3 +98,5 @@ Route::get('admin/certifications/delete', [AdminController::class, 'certificateD
 
 Route::get('verify-certificate', [CertificateController::class, 'index'])->name('verifyCertificate');
 Route::get('generate-transcript', [CertificateController::class, 'generateTranscriptPDF'])->name('generateTranscript');
+
+Route::get('admin/courses/student-list', [AdminController::class, 'downloadCourseStudentsList'])->middleware('verified')->name('admin.downloadCourseStudentsList');

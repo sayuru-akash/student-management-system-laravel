@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('course_fee');
             $table->date('course_start_date');
             $table->string('course_duration');
+            $table->string('course_year', 4);
             $table->boolean('course_status')->default(1);
             $table->timestamps();
         });

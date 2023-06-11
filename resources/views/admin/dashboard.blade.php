@@ -22,6 +22,9 @@
                     <a class="nav-link" href="/admin/courses">Courses</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/admin/modules">Modules</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/admin/enrolments">Enrolments</a>
                 </li>
                 <li class="nav-item">
@@ -65,7 +68,7 @@
                                 </h3>
                                 <p class="text-muted text-lowercase mb-2">{{ $user->email }}</p>
                                 <p class="font-monospace text-uppercase">{{ 'ID: '.$user->student_id }}</p>
-                                <a class="btn btn-danger" href="https://codezela.com/contact/">Contact Support</a>
+                                <a class="btn btn-danger" href="https://codezela.com/contact/">Contact Tech Support</a>
                             </div>
                         </div>
                     </div>

@@ -22,6 +22,9 @@
                     <a class="nav-link" href="/admin/courses">Courses</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/admin/modules">Modules</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/admin/enrolments">Enrolments</a>
                 </li>
                 <li class="nav-item">
@@ -62,6 +65,12 @@
             <a data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary w-25">Add New Course</a>
             <a class="btn btn-sm btn-success w-25" href="{{ route('admin.coursesActive') }}">Filter Active Courses</a>
         </div>
+        <form class="mt-2" action="{{ route('admin.courses') }}" method="GET">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search..." name="search" id="search-input" @if(isset($_GET['search'])) value="{{ $_GET['search'] }}" @endif>
+                <button class="btn btn-outline-primary" type="submit" id="search-btn">Search</button>
+            </div>
+        </form>
         <div class="table-responsive">
             <table class="table table-primary table-striped table-hover">
                 <thead>
@@ -69,8 +78,9 @@
                     <th scope="col">#</th>
                     <th scope="col">Code</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Duration</th>
+                    <th scope="col">Year</th>
                     <th scope="col">Start Date</th>
+                    <th scope="col">Duration</th>
                     <th scope="col" class="d-sm-none d-md-none d-lg-block">Actions</th>
                 </tr>
                 </thead>
@@ -82,8 +92,9 @@
                     <th scope="row">{{ $loop->index }}</th>
                     <td>{{ $course->course_code }}</td>
                     <td>{{ $course->course_name }}</td>
-                    <td>{{ $course->course_duration }}</td>
+                    <td>{{ $course->course_year }}</td>
                     <td>{{ $course->course_start_date }}</td>
+                    <td>{{ $course->course_duration }}</td>
                     <td class="d-sm-none d-md-none d-lg-block">
                         <a data-bs-toggle="modal" data-bs-target="#viewModal{{ $course->id }}"
                            class="btn btn-sm btn-primary w-25">View</a>
@@ -96,9 +107,7 @@
                 @endforeach
                 </tbody>
             </table>
-        </div>
-        <div class="d-flex justify-content-center">
-            {!! $courses->links() !!}
+            {{ $courses->links() }}
         </div>
     </div>
 </div>
@@ -176,6 +185,16 @@
                     <br>
                     <div class="row">
                         <div class="col-sm-3">
+                            <h6 class="col-form-label">Issued Year</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_year"
+                                   value="{{$course->course_year}}" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
                             <h6 class="col-form-label">Status</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
@@ -184,6 +203,15 @@
                                    disabled>
                         </div>
                     </div>
+                    <br>
+                    <br>
+                    <form action="#" method="POST" name="importform"
+                    enctype="multipart/form-data">
+                        @csrf		
+                        <div class="text-center">
+                            <a class="btn btn-primary btn-md" href="../admin/courses/student-list?id={{$course->course_code}}">Download Enrolled Students List</a>
+                        </div> 
+                    </form>
                     <br>
                 </div>
                 <div class="modal-footer">
@@ -262,8 +290,23 @@
                                 <h6 class="col-form-label">Duration</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" name="course_duration"
-                                       value="{{$course->course_duration}}">
+                                <select class="form-control" id="course_duration" name="course_duration">
+                                    <option disabled value="">Select Duration</option>
+                                    <option value="6 Months" @if($course->course_duration == "6 Months") selected @endif>6 Months
+                                    </option>
+                                    <option value="1 Year" @if($course->course_duration == "1 Year") selected @endif>1 Year
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="col-form-label">Issued Year</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control" name="course_year" maxlength="4"
+                                       value="{{$course->course_year}}">
                             </div>
                         </div>
                         <br>
@@ -353,7 +396,20 @@
                             <h6 class="col-form-label">Duration</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" name="course_duration" required>
+                            <select class="form-control" id="course_duration" name="course_duration">
+                                <option disabled value="">Select Duration</option>
+                                <option value="6 Months">6 Months</option>
+                                <option value="1 Year">1 Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="col-form-label">Issued Year</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" name="course_year" maxlength="4" required>
                         </div>
                     </div>
                     <br>

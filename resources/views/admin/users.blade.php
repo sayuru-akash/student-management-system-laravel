@@ -22,6 +22,9 @@
                     <a class="nav-link" href="/admin/courses">Courses</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/admin/modules">Modules</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/admin/enrolments">Enrolments</a>
                 </li>
                 <li class="nav-item">
@@ -61,6 +64,12 @@
             <h1 class="m-2 text-uppercase font-monospace fs-2">Manage Students</h1>
             <a data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary w-25">Add New Student</a>
         </div>
+        <form class="mt-2" action="{{ route('admin.users') }}" method="GET">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search..." name="search" id="search-input" @if(isset($_GET['search'])) value="{{ $_GET['search'] }}" @endif>
+                <button class="btn btn-outline-primary" type="submit" id="search-btn">Search</button>
+            </div>
+        </form>
         <div class="table-responsive">
             <table class="table table-primary table-striped table-hover">
                 <thead>
@@ -70,7 +79,6 @@
                     <th scope="col">Name</th>
                     <th scope="col">NIC</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
                     <th scope="col" class="d-sm-none d-md-none d-lg-block">Actions</th>
                 </tr>
                 </thead>
@@ -83,7 +91,6 @@
                         <td>{{ $user->fname . ' ' . $user->lname }}</td>
                         <td>{{ $user->nic }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->phone }}</td>
                         <td class="d-sm-none d-md-none d-lg-block">
                             <a data-bs-toggle="modal" data-bs-target="#viewModal{{ $user->id }}"
                                class="btn btn-sm btn-primary w-25">View</a>
@@ -96,9 +103,7 @@
                 @endforeach
                 </tbody>
             </table>
-        </div>
-        <div class="d-flex justify-content-center">
-            {!! $users->links() !!}
+            {{ $users->links() }}
         </div>
     </div>
 </div>
@@ -187,6 +192,27 @@
                         </div>
                     </div>
                     <br>
+                    @if (!$user->enrolments->isEmpty())
+                    <table class="table table-striped">
+                        <span class="text-black fw-bold">Enrolments</span>
+                        <thead>
+                            <tr>
+                                <th class="text-muted">Code</th>
+                                <th class="text-muted">Programme Name</th>
+                                <th class="text-muted">Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @foreach ($user->enrolments as $enrolment)
+                                    <tr>
+                                        <td>{{ $enrolment->course_code }}</td>
+                                        <td>{{ $enrolment->course_name }}</td>
+                                        <td>{{ $enrolment->course_year }}</td>
+                                    </tr>
+                                @endforeach
+                        </tbody>
+                    </table>
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -214,7 +240,7 @@
                                 <h6 class="col-form-label">First Name</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" name="fname" value="{{$user->fname}}">
+                                <input type="text" class="form-control" name="fname" value="{{$user->fname}}" required>
                             </div>
                         </div>
                         <br>
@@ -223,7 +249,7 @@
                                 <h6 class="col-form-label">Last Name</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" name="lname" value="{{$user->lname}}">
+                                <input type="text" class="form-control" name="lname" value="{{$user->lname}}" required>
                             </div>
                         </div>
                         <br>
@@ -232,7 +258,7 @@
                                 <h6 class="col-form-label">NIC</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" name="nic" value="{{$user->nic}}">
+                                <input type="text" class="form-control" maxlength="12" name="nic" value="{{$user->nic}}" required>
                             </div>
                         </div>
                         <br>
@@ -241,7 +267,7 @@
                                 <h6 class="col-form-label">Email</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="email" class="form-control" name="email" value="{{$user->email}}">
+                                <input type="email" class="form-control" name="email" value="{{$user->email}}" required>
                             </div>
                         </div>
                         <br>
@@ -250,7 +276,7 @@
                                 <h6 class="col-form-label">Phone</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" name="phone" value="{{$user->phone}}">
+                                <input type="text" class="form-control" maxlength="10" name="phone" value="{{$user->phone}}" required>
                             </div>
                         </div>
                         <br>
@@ -335,7 +361,7 @@
                             <h6 class="col-form-label">NIC</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" name="nic" required>
+                            <input type="text" class="form-control" maxlength="12" name="nic" required>
                         </div>
                     </div>
                     <br>
@@ -353,7 +379,7 @@
                             <h6 class="col-form-label">Phone</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" name="phone" required>
+                            <input type="text" class="form-control" maxlength="10" name="phone" required>
                         </div>
                     </div>
                     <br>
@@ -375,7 +401,6 @@
                                 <option selected disabled value="">Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
-                                <option value="Decline to answer">Decline to answer</option>
                             </select>
                         </div>
                     </div>

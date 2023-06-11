@@ -8,12 +8,12 @@
                         <img src="https://sitc.lk/wp-content/uploads/2021/11/photo_2021-11-23_18-40-47-300x92.png"
                              alt="sitc logo">
                     </a>
-                    2022 &copy; Copyright <strong><span>SITC Campus</span></strong>. All Rights Reserved
+                    2023 &copy; Copyright <strong><span>SITC Campus</span></strong>. All Rights Reserved
                     <div class="social-links mt-3">
                         <a href="https://www.facebook.com/sitc.campus/" class="facebook"><i class="bi bi-facebook"></i></a>
                         <a href="https://www.youtube.com/channel/UCLatD85fttdOLDxFJnCbXyQ" class="youtube"><i
                                 class="bi bi-youtube"></i></a>
-                        <a href="https://www.linkedin.com/company/sitc-campus/" class="linkedin"><i
+                        <a href="https://www.linkedin.com/school/sitc-campus/" class="linkedin"><i
                                 class="bi bi-linkedin"></i></a>
                     </div>
                 </div>

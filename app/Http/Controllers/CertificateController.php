@@ -28,7 +28,7 @@ class CertificateController extends Controller
             return view('verify-certificate');
         }
 
-        $certificate = Certificate::where('certificate_id', $request->id)->leftJoin('users', 'users.student_id', '=', 'certificates.student_id')->leftJoin('courses', 'courses.course_code', '=', 'certificates.course_code')->select('certificates.*', 'users.fname', 'users.lname', 'courses.course_name', 'courses.course_duration')->first();
+        $certificate = Certificate::where('certificate_id', $request->id)->leftJoin('users', 'users.student_id', '=', 'certificates.student_id')->leftJoin('courses', 'courses.course_code', '=', 'certificates.course_code')->select('certificates.*', 'users.fname', 'users.lname', 'courses.course_name', 'courses.course_duration', 'courses.course_year')->first();
         $generated_at = now();
 
         $pdf = PDF::loadView('transcript', ['certificate' => $certificate,

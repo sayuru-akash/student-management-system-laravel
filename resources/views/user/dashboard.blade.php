@@ -160,8 +160,34 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title">{{$certificate->certificate_id}}</h5>
+                                                <p class="card-text">{{$certificate->course_name}} - {{$certificate->course_year}}</p>
                                                 <a href="/verify-certificate?search={{$certificate->certificate_id}}"
                                                    class="btn btn-primary">Verify Results</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                </div>
+                <div class="card mb-3">
+                    @if($enrolments->first() != null)
+                        <div class="card-header text-uppercase font-monospace">Student Enrolments</div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($enrolments as $enrolment)
+                                    <div class="col-sm-6">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Invoice ID: {{$enrolment->invoice_id}}</h5>
+                                                <h6 class="card-subtitle mb-2 text-muted">{{$enrolment->course_code}}</h6>
+                                                <p class="card-text">{{$enrolment->course_name}} - {{$enrolment->course_year}}</p>
+                                                @if($enrolment->enrollment_status == 1)
+                                                    <button class="btn btn-success">Active</button>
+                                                @else
+                                                    <button class="btn btn-warning">Inactive</button>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -191,7 +217,8 @@
                             <h6 class="col-form-label">First Name</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" name="fname" value="{{$user->fname}}">
+                            <span type="text" class="form-control" name="fname"> {{$user->fname}}</span>
+                            <input type="hidden" name="fname" value="{{$user->fname}}" readonly>
                         </div>
                     </div>
                     <br>
@@ -200,7 +227,8 @@
                             <h6 class="col-form-label">Last Name</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" name="lname" value="{{$user->lname}}">
+                            <span type="text" class="form-control" name="lname"> {{$user->lname}}</span>
+                            <input type="hidden" name="lname" value="{{$user->lname}}" readonly>
                         </div>
                     </div>
                     <br>
@@ -240,9 +268,6 @@
                                 <option disabled value="">Select Gender</option>
                                 <option value="Male" @if($user->gender == "Male") selected @endif>Male</option>
                                 <option value="Female" @if($user->gender == "Female") selected @endif>Female</option>
-                                <option value="Decline to answer"
-                                        @if($user->gender == "Decline to answer") selected @endif>Decline to answer
-                                </option>
                             </select>
                         </div>
                     </div>

@@ -22,6 +22,9 @@
                     <a class="nav-link" href="/admin/courses">Courses</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/admin/modules">Modules</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/admin/enrolments">Enrolments</a>
                 </li>
                 <li class="nav-item">
@@ -61,6 +64,12 @@
             <h1 class="m-2 text-uppercase font-monospace fs-2">Manage Modules</h1>
             <a data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary w-25">Add New Module</a>
         </div>
+        <form class="mt-2" action="{{ route('admin.modules') }}" method="GET">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search..." name="search" id="search-input" @if(isset($_GET['search'])) value="{{ $_GET['search'] }}" @endif>
+                <button class="btn btn-outline-primary" type="submit" id="search-btn">Search</button>
+            </div>
+        </form>
         <div class="table-responsive">
             <table class="table table-primary table-striped table-hover">
                 <thead>
@@ -86,9 +95,7 @@
                 @endforeach
                 </tbody>
             </table>
-        </div>
-        <div class="d-flex justify-content-center">
-            {!! $modules->links() !!}
+           {{ $modules->links() }}
         </div>
     </div>
 </div>
