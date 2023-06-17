@@ -69,7 +69,7 @@
                                                 <strong>Student Name</strong>
                                             </td>
                                             <td>
-                                                {{$certificate->fname . ' ' . $certificate->lname}}
+                                                {{$certificate->fallback_name}}
                                             </td>
                                         </tr>
                                         <tr>

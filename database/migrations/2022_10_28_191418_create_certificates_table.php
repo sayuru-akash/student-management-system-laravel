@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('student_id')->references('student_id')->on('users')->onDelete('cascade');
             $table->string('course_code')->references('course_code')->on('courses');
             $table->string('course_result');
+            $table->string('fallback_name');
             $table->timestamps();
         });
     }

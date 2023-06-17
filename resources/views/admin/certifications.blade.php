@@ -126,8 +126,8 @@
                             <h6 class="col-form-label">Student Name</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" name="student_name"
-                                   value="{{$certificate->fname . ' ' . $certificate->lname}}" disabled>
+                           <input type="text" class="form-control" name="student_name"
+                            value="{{ (!empty($certificate->fname) || !empty($certificate->lname)) ? $certificate->fname . ' ' . $certificate->lname : $certificate->fallback_name }}" disabled>
                         </div>
                     </div>
                     <br>

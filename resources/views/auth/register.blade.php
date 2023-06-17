@@ -23,6 +23,7 @@
                                 @csrf
                                 <div class="row">
                                     <div class="form-group mb-3 col-md-6">
+                                        <label class="form-label" for="first_name">First Name</label>
                                         <input type="text" placeholder="First Name" id="first_name" class="form-control"
                                                name="fname" value="{{ old('fname') }}"
                                                required autofocus>
@@ -31,6 +32,7 @@
                                         @endif
                                     </div>
                                     <div class="form-group mb-3  col-md-6">
+                                        <label class="form-label" for="last_name">Last Name</label>
                                         <input type="text" placeholder="Last Name" id="last_name" class="form-control"
                                                name="lname" value="{{ old('lname') }}"
                                                required autofocus>
@@ -40,6 +42,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="nic">NIC Number</label>
                                     <input type="text" placeholder="NIC Number" id="nic" class="form-control" 
                                            name="nic" maxlength="12" value="{{ old('nic') }}"
                                            required>
@@ -48,6 +51,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="birthday">Date of Birth</label>
                                     <input type="date" id="birthday"
                                            class="form-control" name="birthday" value="{{ old('birthday') }}"
                                            required>
@@ -56,16 +60,18 @@
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
-                                <select class="form-control" id="gender" name="gender">
-                                    <option selected disabled value="">Select Gender</option>
-                                    <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                                    <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
-                                </select>
+                                    <label class="form-label" for="gender">Gender</label>
+                                    <select class="form-control" id="gender" name="gender">
+                                        <option selected disabled value="">Select Gender</option>
+                                        <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                                        <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
+                                    </select>
                                     @if ($errors->has('gender'))
                                         <span class="text-danger">{{ $errors->first('gender') }}</span>
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="email">Email</label>
                                     <input type="text" placeholder="Email" id="email_address" class="form-control"
                                            name="email" value="{{ old('email') }}"
                                            required autofocus>
@@ -74,6 +80,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="phone">Mobile Number</label>
                                     <input type="text" placeholder="Mobile Number" id="phone" class="form-control"
                                            name="phone" maxlength="10" value="{{ old('phone') }}"
                                            required autofocus>
@@ -83,6 +90,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="password">Password</label>
                                     <input type="password" placeholder="Password" id="password" class="form-control"
                                            name="password" required>
                                     <small class="text-muted">Use at least 8 characters, including a number</small>
@@ -91,6 +99,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label" for="password_confirmation">Confirm Password</label>
                                     <input type="password" placeholder="Confirm Password" id="password_confirmation"
                                            class="form-control"
                                            name="password_confirmation" required>

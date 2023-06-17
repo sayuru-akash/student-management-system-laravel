@@ -3,7 +3,7 @@
 <head>
     @include('includes.head')
 </head>
-<body>
+<body style="overflow-x: hidden !important;">
 <header class="row mb-5">
     @include('includes.header')
 </header>

@@ -2,7 +2,7 @@
 <footer id="footer" class="footer">
     <div class="footer-top">
         <div class="container">
-            <div class="row gy-4">
+            <div class="row gy-4 ps-4 pe-4">
                 <div class="col-lg-5 col-md-12 footer-info">
                     <a href="/" class="logo d-flex align-items-center">
                         <img src="https://sitc.lk/wp-content/uploads/2021/11/photo_2021-11-23_18-40-47-300x92.png"
@@ -43,10 +43,10 @@
                     <h4>Contact Us</h4>
 
                     <p>
-                        <a class="text-black text-decoration-none" href="https://goo.gl/maps/ghTKcMAghQn99fde8">
-                            49, Court Road,<br>
-                            Gampola,<br>
-                            Sri Lanka</a> <br><br>
+                        <a class="text-black text-decoration-none" href="#">
+                            World Trade Center<br>
+                            Level 26, East Tower,<br>
+                            Colombo 01, Sri Lanka</a> <br><br>
                         <a class="text-black text-decoration-none" href="tel:+940813137618">
                             <strong>Phone:</strong> +94 081 3137 618<br></a>
                         <a class="text-black text-decoration-none" href="mailto:info@sitc.lk">

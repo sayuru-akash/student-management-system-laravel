@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Certificate;
+use App\Models\Module;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -29,10 +30,11 @@ class CertificateController extends Controller
         }
 
         $certificate = Certificate::where('certificate_id', $request->id)->leftJoin('users', 'users.student_id', '=', 'certificates.student_id')->leftJoin('courses', 'courses.course_code', '=', 'certificates.course_code')->select('certificates.*', 'users.fname', 'users.lname', 'courses.course_name', 'courses.course_duration', 'courses.course_year')->first();
+        $modules = Module::where('course_code', $certificate->course_code)->get();
         $generated_at = now();
 
         $pdf = PDF::loadView('transcript', ['certificate' => $certificate,
-            'generated_at' => $generated_at]);
+            'generated_at' => $generated_at], ['modules' => $modules]);
         return $pdf->download('SITC Transcript.pdf');
     }
 }

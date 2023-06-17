@@ -14,5 +14,6 @@ class Certificate extends Model
         'student_id',
         'course_code',
         'course_result',
+        'fallback_name',
     ];
 }

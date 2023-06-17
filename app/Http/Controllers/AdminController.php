@@ -13,6 +13,7 @@ use App\Models\Enrollment;
 use App\Models\Module;
 use App\Models\Certificate;
 use App\Exports\UsersPerCourseExport;
+use App\Exports\CertificatesPerCourseExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
@@ -259,6 +260,16 @@ class AdminController extends Controller
         return redirect("login")->withErrors('You are not allowed to access the requested resource!');
     }
 
+    public function downloadCourseCertificatesList(Request $request)
+    {
+        if (Auth::check() && Auth::user()->role == 'admin') {
+            $course_code = $request->id;
+            
+            return (new CertificatesPerCourseExport($course_code))->download('Certificates List - ' . $course_code .'.xlsx');
+        }
+        return redirect("login")->withErrors('You are not allowed to access the requested resource!');
+    }
+
     public function modules(Request $request)
     {
         if (Auth::check()) {
@@ -410,9 +421,9 @@ class AdminController extends Controller
             $user = Auth::user();
             if ($user->role == 'admin') {
                 if ($request->search != null) {
-                    $certificates = Certificate::orderBy('id', 'DESC')->leftJoin('users', 'users.student_id', '=', 'certificates.student_id')->leftJoin('courses', 'courses.course_code', '=', 'certificates.course_code')->select('certificates.*', 'users.student_id', 'users.fname', 'users.lname', 'users.nic', 'users.phone', 'courses.course_name')->where('certificates.student_id', 'LIKE', '%' . $request->search . '%')->orWhere('certificates.course_code', 'LIKE', '%' . $request->search . '%')->orWhere('certificates.certificate_id', 'LIKE', '%' . $request->search . '%')->paginate(10);
+                    $certificates = Certificate::orderBy('id', 'DESC')->leftJoin('users', 'users.student_id', '=', 'certificates.student_id')->leftJoin('courses', 'courses.course_code', '=', 'certificates.course_code')->select('certificates.*', 'users.fname', 'users.lname', 'users.nic', 'users.phone', 'courses.course_name')->where('certificates.student_id', 'LIKE', '%' . $request->search . '%')->orWhere('certificates.course_code', 'LIKE', '%' . $request->search . '%')->orWhere('certificates.certificate_id', 'LIKE', '%' . $request->search . '%')->paginate(10);
                 } else {
-                    $certificates = Certificate::orderBy('id', 'DESC')->leftJoin('users', 'users.student_id', '=', 'certificates.student_id')->leftJoin('courses', 'courses.course_code', '=', 'certificates.course_code')->select('certificates.*', 'users.student_id', 'users.fname', 'users.lname', 'users.nic', 'users.phone', 'courses.course_name')->paginate(10);
+                    $certificates = Certificate::orderBy('id', 'DESC')->leftJoin('users', 'users.student_id', '=', 'certificates.student_id')->leftJoin('courses', 'courses.course_code', '=', 'certificates.course_code')->select('certificates.*', 'users.fname', 'users.lname', 'users.nic', 'users.phone', 'courses.course_name')->paginate(10);
                 }
                 $course_codes = Course::select('course_code')->get();
                 $enrolments = Enrollment::all()->where('enrollment_status', true);
@@ -467,6 +478,7 @@ class AdminController extends Controller
                     $certificate->student_id = $user->student_id;
                     $certificate->course_code = $course->course_code;
                     $certificate->course_result = $request->course_result;
+                    $certificate->fallback_name = $user->fname . " " . $user->lname;
                     $certificate->save();
                     return redirect()->back()->with('message', 'Certificate added successfully');
                 } else {

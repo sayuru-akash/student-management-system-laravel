@@ -203,16 +203,21 @@
                                    disabled>
                         </div>
                     </div>
-                    <br>
-                    <br>
-                    <form action="#" method="POST" name="importform"
+                    <br> <hr> <br>
+                    <form action="#" method="POST" name="import-enr-form"
                     enctype="multipart/form-data">
                         @csrf		
                         <div class="text-center">
                             <a class="btn btn-primary btn-md" href="../admin/courses/student-list?id={{$course->course_code}}">Download Enrolled Students List</a>
                         </div> 
                     </form>
-                    <br>
+                    <form action="#" method="POST" name="import-cert-form"
+                    enctype="multipart/form-data">
+                        @csrf		
+                        <div class="text-center">
+                            <a class="btn btn-primary btn-md" href="../admin/courses/certificate-list?id={{$course->course_code}}">Download Issued Certificates List</a>
+                        </div> 
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

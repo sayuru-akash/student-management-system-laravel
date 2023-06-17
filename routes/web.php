@@ -100,3 +100,4 @@ Route::get('verify-certificate', [CertificateController::class, 'index'])->name(
 Route::get('generate-transcript', [CertificateController::class, 'generateTranscriptPDF'])->name('generateTranscript');
 
 Route::get('admin/courses/student-list', [AdminController::class, 'downloadCourseStudentsList'])->middleware('verified')->name('admin.downloadCourseStudentsList');
+Route::get('admin/courses/certificate-list', [AdminController::class, 'downloadCourseCertificatesList'])->middleware('verified')->name('admin.downloadCourseCertificatesList');
