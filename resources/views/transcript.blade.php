@@ -58,11 +58,13 @@
             </strong>
             {{$certificate->certificate_id}}
             </br>
+            <!-- Commented out as per client request
             <strong>
                 Issued On:
             </strong>
             {{$certificate->created_at->format('Y-m-d')}}
             </br>
+            -->
             <strong>
                 Transcript Printed On:
             </strong>

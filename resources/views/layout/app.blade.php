@@ -2,6 +2,7 @@
 <html>
 <head>
     @include('includes.head')
+    @yield('noindex')
 </head>
 <body style="overflow-x: hidden !important;">
 <header class="row mb-5">

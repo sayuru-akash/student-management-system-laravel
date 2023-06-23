@@ -1,5 +1,11 @@
 @extends('layout.app')
 
+@isset($certificate)
+    @section('noindex')
+        <meta name="robots" content="noindex" />
+    @endsection
+@endisset
+
 @section('content')
     <div class="container">
         <!-- ======= Results Section ======= -->
@@ -96,6 +102,7 @@
                                                 {{$certificate->course_result}}
                                             </td>
                                         </tr>
+                                        <!-- Commented out as per client request
                                         <tr>
                                             <td>
                                                 <strong>Issued On</strong>
@@ -104,6 +111,7 @@
                                                 {{$certificate->created_at}}
                                             </td>
                                         </tr>
+                                        -->
                                     </table>
                                     <a class="btn btn-warning fw-bold"
                                        href="{{ url('generate-transcript?id=' . $certificate->certificate_id) }}">
