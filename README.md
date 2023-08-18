@@ -7,8 +7,6 @@
 [![GPL License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -25,8 +23,6 @@
     <br />
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -53,28 +49,24 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 [![Product Name Screen Shot][product-screenshot]](https://github.com/sayuru-akash/student-management-system-laravel)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 ### Built With
 
-* [Laravel](https://laravel.com/)
-* [Bootstrap](https://getbootstrap.com)
-* [MySQL](https://www.mysql.com/)
+-   [Laravel](https://laravel.com/)
+-   [Bootstrap](https://getbootstrap.com)
+-   [MySQL](https://www.mysql.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 To get a local copy up and running follow these simple example steps.
@@ -82,44 +74,42 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This project is built using Laravel. So you need to have the following installed on your machine.
-* PHP
-* Composer
-* MySQL
+
+-   PHP
+-   Composer
+-   MySQL
 
 ### Installation
 
 1. Get Composer running on your machine
-   ```sh
-   composer install
-   ```
+    ```sh
+    composer install
+    ```
 2. Clone the repo and resolve dependencies, if any
-   ```sh
-   git clone https://github.com/sayuru-akash/student-management-system-laravel.git
-   ```
+    ```sh
+    git clone https://github.com/sayuru-akash/student-management-system-laravel.git
+    ```
 3. Run the project
-
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 This project is a student management system for an institute. It has the following features.
-* Student registration
-* Student login
-* Student profile
-* Student admission
-* Student management
-* Student certificate management
+
+-   Student registration
+-   Student login
+-   Student profile
+-   Student admission
+-   Student management
+-   Student certificate management
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -135,23 +125,24 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 <!-- CONTRIBUTORS -->
+
 ## Contributors
 
 This project is a corporate project done by the following user.
-* [Sayuru Akash](https://github.com/sayuru-akash/)
+
+-   [Sayuru Akash](https://github.com/sayuru-akash/)
 
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
+
 ## Contact
 
 Sayuru Akash - [@sayuru_akash](https://twitter.com/sayuru_akash) - contact@sayuru.me
@@ -160,10 +151,9 @@ Project Link: [https://github.com/sayuru-akash/student-management-system-laravel
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/sayuru-akash/student-management-system-laravel.svg?style=for-the-badge
 [contributors-url]: https://github.com/sayuru-akash/student-management-system-laravel/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/sayuru-akash/student-management-system-laravel.svg?style=for-the-badge
@@ -176,6 +166,4 @@ Project Link: [https://github.com/sayuru-akash/student-management-system-laravel
 [license-url]: https://github.com/sayuru-akash/student-management-system-laravel/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/sayuruakash
-[product-screenshot]: images/screenshot.jpeg
-
-
+[product-screenshot]: images/screenshot.jpg
